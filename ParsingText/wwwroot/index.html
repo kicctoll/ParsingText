@@ -3,11 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Parsing text</title>
-    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<input type="file" id="file" name="file" accept="text/plain" >
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a href="" class="navbar-brand">Parsing text</a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center m-2">
+                <div class="d-inline-flex input-file" style="cursor: pointer">
+                    <button id="upload-main-file-btn" class="btn btn-primary">Upload the main file</button>
+                    <input type="file" id="main-file" accept="text/plain">
+                </div>
+                <div id="upload-second-file-wrap" class="input-file ml-3" style="cursor: pointer">
+                    <button id="upload-second-file-btn" class="btn btn-secondary">Upload the second file</button>
+                    <input type="file" id="second-file" accept="text/plain">
+                </div>
+            </div>
+            <div id="main-info">
+                <div id="file-info" class="d-flex justify-content-between">
+                    <div id="file-info-main">
+
+                    </div>
+                    <div id="file-info-second">
+
+                    </div>
+                </div>
+                <div id="show-unique-words-wrap" class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="show-unique-words">
+                    <label class="custom-control-label" for="show-unique-words">Show only unique words</label>
+                </div>
+                <table id="result-table" class="table table-striped table-bordered">
+                    <tr data-row="static">
+                        <th>Word</th>
+                        <th>Quantity</th>
+                        <th>Number of line in another file</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="./lib/jquery/js/jquery-3.4.0.min.js"></script>
 <script src="./lib/bootstrap/js/bootstrap.bundle.min.js"></script>
