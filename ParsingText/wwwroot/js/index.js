@@ -66,7 +66,12 @@ $(function () {
             method: 'Post'
         }).then(async response => {
             let responseBody = await response.json();
-            response.status === 200 ? setInfoFromSecondFile(responseBody) : alert(responseBody);
+            if (response.status === 200) {
+                setInfoFromSecondFile(responseBody)
+            } else {
+                isMainFileUploaded = false;
+                alert(responseBody);
+            }
         }).catch(error => console.log(error));
 
         $(spinnerWrap).css('display', 'none');
