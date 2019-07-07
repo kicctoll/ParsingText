@@ -36,9 +36,9 @@ $(function () {
         await fetch(`${parsAPI}/upload/main-file`, {
             body: formData,
             method: 'Post'
-        }).then( async(response) => {
+        }).then(async (response) => {
             let fileInfo = await response.json();
-            setInfoFromMainFile(fileInfo);
+            response.status === 200 ? setInfoFromMainFile(fileInfo) : alert(fileInfo);
         }).catch(error => console.log(error));
     });
 
@@ -59,7 +59,7 @@ $(function () {
             method: 'Post'
         }).then(async response => {
             let responseBody = await response.json();
-            setInfoFromSecondFile(responseBody);
+            response.status === 200 ? setInfoFromSecondFile(responseBody) : alert(responseBody);
         }).catch(error => console.log(error));
     });
 
@@ -131,6 +131,10 @@ $(function () {
             item.innerText = lineNumbers[i].substring(0, lineNumbers[i].length - 2);
         }
 
+        $(uploadSecondFileBtn).removeClass('btn-secondary');
+        $(uploadSecondFileBtn).addClass('btn-warning');
+        $(uploadSecondFileBtn).text('Change the secondary file');
+
         isSecondFileUploaded = true;
     }
 
@@ -144,6 +148,7 @@ $(function () {
         $(uploadSecondFileWrap).css('display', 'none');
         $(uploadSecondFileBtn).removeClass('btn-warning');
         $(uploadSecondFileBtn).addClass('btn-secondary');
+        $(uploadSecondFileBtn).text('Upload the secondary file');
 
         $(uploadMainFileBtn).removeClass('btn-danger');
         $(uploadMainFileBtn).addClass('btn-primary');

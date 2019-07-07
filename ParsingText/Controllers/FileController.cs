@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace ParsingText.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var cleanText = await RetrieveCleanTextFromFileAsync(model.File);
+
+            if (cleanText.Length == 0) return BadRequest("The file is empty!");
+            
             var words = SplitToWordsAndOrderBy(cleanText).ToList();
 
             var quantities = words
@@ -46,6 +50,9 @@ namespace ParsingText.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var textFromSecondFile = await RetrieveCleanTextFromFileAsync(model.File);
+
+            if (textFromSecondFile.Length == 0) return BadRequest("The file is empty!");
+
             var wordsFromMainFile =
                 Regex.Split(model.TextFromMainWords, @",")
                     .ToList();
@@ -97,6 +104,7 @@ namespace ParsingText.Controllers
 
         private IEnumerable<string> SplitToWordsAndOrderBy(string text) =>
             Regex.Split(text, @"\s+")
+                .Where(s => !string.IsNullOrWhiteSpace(s))
                 .OrderBy(w => w);
     }
 }
