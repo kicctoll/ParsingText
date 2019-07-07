@@ -7,10 +7,8 @@ $(function () {
 
     const uploadMainFileBtn = $('#upload-main-file-btn');
     const uploadSecondFileBtn = $('#upload-second-file-btn');
-    const showUniqueWordsInput = $('#show-unique-words');
 
     const uploadSecondFileWrap = $('#upload-second-file-wrap');
-    const showUniqueWordsWrap = $('#show-unique-words-wrap');
 
     let mainWords = [];
 
@@ -65,17 +63,13 @@ $(function () {
         }).catch(error => console.log(error));
     });
 
-    $(showUniqueWordsInput).change(function () {
-        alert('Hi');
-    });
-
     function setInfoFromMainFile(fileInfo) {
         uploadMainFileBtn.text('Change the main file');
         uploadMainFileBtn.removeClass('btn-primary');
         uploadMainFileBtn.addClass('btn-danger');
 
         const nameTag = document.createElement('span');
-        nameTag.innerText = `Main file: ${fileInfo.name}.txt`;
+        nameTag.innerText = `Main file: ${fileInfo.name}`;
 
         const totalNumberTag = document.createElement('span');
         totalNumberTag.innerText = `Total number: ${fileInfo.totalNumber}`;
@@ -97,9 +91,11 @@ $(function () {
             nameFieldTag.innerText = word;
 
             const quantityFieldTag = document.createElement('td');
+            $(quantityFieldTag).attr('data-row-column', 'quantity');
             quantityFieldTag.innerText = '1';
 
             const lineNumberInAnotherFileTag = document.createElement('td');
+            $(lineNumberInAnotherFileTag).attr('data-row-column', 'lineNumbers');
             lineNumberInAnotherFileTag.innerHTML = '<i class="fas fa-question"></i>';
 
             wordRowTag.append(nameFieldTag);
@@ -110,23 +106,37 @@ $(function () {
         }
 
         resultTableTag.css('display', 'table');
-        showUniqueWordsWrap.css('display', 'block');
         uploadSecondFileWrap.css('display', 'inline-flex');
 
         isMainFileUploaded = true;
         mainWords = fileInfo.words;
     }
 
-    function setInfoFromSecondFile(reponseBody) {
+    function setInfoFromSecondFile(responseBody) {
+        console.log(responseBody);
 
+        if (isSecondFileUploaded) {
+            fileInfoSecondTag.empty();
+        }
+        const fileNameTag = document.createElement('span');
+        fileNameTag.innerText = `Second file: ${responseBody.fileName}`;
+
+        fileInfoSecondTag.append(fileNameTag);
+        $(fileInfoSecondTag).css('display', 'block');
+
+        const lineNumbersFields = $('td[data-row-column="lineNumbers"]');
+        const lineNumbers = responseBody.lineNumbers;
+        for (let i = 0; i < lineNumbers.length; i++) {
+            const item = lineNumbersFields.get(i);
+            item.innerText = lineNumbers[i].substring(0, lineNumbers[i].length - 2);
+        }
+
+        isSecondFileUploaded = true;
     }
 
     function resetToInitialState() {
         $('tr[data-row="dynamic"]').remove();
         $(resultTableTag).css('display', 'none');
-
-        $(showUniqueWordsWrap).find('input[type="checkbox"]').prop('checked', false);
-        $(showUniqueWordsWrap).css('display', 'none');
 
         $(fileInfoMainTag).empty();
         $(fileInfoSecondTag).empty();
