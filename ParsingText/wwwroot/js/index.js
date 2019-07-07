@@ -9,6 +9,7 @@ $(function () {
     const uploadSecondFileBtn = $('#upload-second-file-btn');
 
     const uploadSecondFileWrap = $('#upload-second-file-wrap');
+    const spinnerWrap = $('#spinner-wrap');
 
     let mainWords = [];
 
@@ -33,6 +34,8 @@ $(function () {
         const formData = new FormData();
         formData.append("File", requiredFile);
 
+        $(spinnerWrap).css('display', 'flex');
+
         await fetch(`${parsAPI}/upload/main-file`, {
             body: formData,
             method: 'Post'
@@ -40,6 +43,8 @@ $(function () {
             let fileInfo = await response.json();
             response.status === 200 ? setInfoFromMainFile(fileInfo) : alert(fileInfo);
         }).catch(error => console.log(error));
+
+        $(spinnerWrap).css('display', 'none');
     });
 
     $('#second-file').click(function () {
@@ -54,6 +59,8 @@ $(function () {
         formData.append("TextFromMainWords", mainWords);
         formData.append("isUnique", isUniqueWordsShown.toString());
 
+        $(spinnerWrap).css('display', 'flex');
+
         await fetch(`${parsAPI}/upload/second-file`, {
             body: formData,
             method: 'Post'
@@ -61,6 +68,8 @@ $(function () {
             let responseBody = await response.json();
             response.status === 200 ? setInfoFromSecondFile(responseBody) : alert(responseBody);
         }).catch(error => console.log(error));
+
+        $(spinnerWrap).css('display', 'none');
     });
 
     function setInfoFromMainFile(fileInfo) {
@@ -96,7 +105,7 @@ $(function () {
 
             const lineNumberInAnotherFileTag = document.createElement('td');
             $(lineNumberInAnotherFileTag).attr('data-row-column', 'lineNumbers');
-            lineNumberInAnotherFileTag.innerHTML = '<i class="fas fa-question"></i>';
+            lineNumberInAnotherFileTag.innerHTML = '<i class="fas fa-question" style="font-size: 12px"></i>';
 
             wordRowTag.append(nameFieldTag);
             wordRowTag.append(quantityFieldTag);
