@@ -83,16 +83,16 @@ $(function () {
 
         fileInfoMainTag.css('display', 'block');
 
-        for(const word of fileInfo.words) {
+        for (let i = 0; i < fileInfo.words.length; i++) {
             const wordRowTag = document.createElement('tr');
             $(wordRowTag).attr('data-row', 'dynamic');
 
             const nameFieldTag = document.createElement('td');
-            nameFieldTag.innerText = word;
+            nameFieldTag.innerText = fileInfo.words[i];
 
             const quantityFieldTag = document.createElement('td');
             $(quantityFieldTag).attr('data-row-column', 'quantity');
-            quantityFieldTag.innerText = '1';
+            quantityFieldTag.innerText = fileInfo.quantities[i];
 
             const lineNumberInAnotherFileTag = document.createElement('td');
             $(lineNumberInAnotherFileTag).attr('data-row-column', 'lineNumbers');

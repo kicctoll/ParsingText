@@ -16,12 +16,17 @@ namespace ParsingText.Controllers
     public class FileController : Controller
     {
         [HttpPost("upload/main-file")]
-        public async Task<IActionResult> UploadMainFile([FromForm] FileViewModel model)
+        public async Task<IActionResult> ParseMainFile([FromForm] FileViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var cleanText = await RetrieveCleanTextFromFileAsync(model.File);
             var words = SplitToWordsAndOrderBy(cleanText).ToList();
+
+            var quantities = words
+                .GroupBy(w => w)
+                .Select(group => group.Count())
+                .ToList();
 
             var uniqueWords = words.Distinct().ToList();
 
@@ -29,13 +34,14 @@ namespace ParsingText.Controllers
             {
                 Name = model.File.FileName,
                 Words = uniqueWords,
+                Quantities = quantities,
                 TotalNumber = words.Count,
                 UniqueNumber = uniqueWords.Count
             });
         }
 
         [HttpPost("upload/second-file")]
-        public async Task<IActionResult> UploadSecondFile(SecondFileViewModel model)
+        public async Task<IActionResult> ParseSecondFile(SecondFileViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

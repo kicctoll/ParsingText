@@ -8,6 +8,8 @@ using System.Collections.Generic;
          
          public IEnumerable<string> Words { get; set; }
          
+         public IEnumerable<int> Quantities { get; set; }
+         
          public int TotalNumber { get; set; }
          
          public int UniqueNumber { get; set; }
